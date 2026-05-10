@@ -1,3 +1,22 @@
+<?php
+include "koneksi.php";
+$id = $_GET ['id'];
+$sql = mysqli_query($conn, "SELECT * FROM categories WHERE id = '$id'");
+$hasil = mysqli_fetch_array($sql);
+if (isset($_POST['update'])) {
+    $nm_kat = $_POST['nm_kat'];
+
+    $query = mysqli_query($conn, "UPDATE categories SET category_name = '$nm_kat' WHERE id='$id'");
+    if ($query) {
+        echo "<script> alert('Data Berhasil Diubah!') </script>";
+        header("refresh:0, kategori_produk.php");
+    } else {
+        echo "<script> alert('Data Gagal Diubah!') </script>";
+        header("refresh:0, kategori_produk.php");
+    }
+    
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +27,6 @@
   <title>Kategori Produk - Inventory Barang</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
-
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -33,7 +51,7 @@
 
 <body>
 
-  <!-- ======= Header ======= -->
+ <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
@@ -53,55 +71,55 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+           
 
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>Kevin Anderson</h6>
+              <span>Web Designer</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
 
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-              <li class="dropdown-header">
-                <h6>Kevin Anderson</h6>
-                <span>Web Designer</span>
-              </li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
 
-              <li>
-                <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                  <i class="bi bi-person"></i>
-                  <span>My Profile</span>
-                </a>
-              </li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                <i class="bi bi-gear"></i>
+                <span>Account Settings</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
 
-              <li>
-                <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                  <i class="bi bi-gear"></i>
-                  <span>Account Settings</span>
-                </a>
-              </li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                <i class="bi bi-question-circle"></i>
+                <span>Need Help?</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
 
-              <li>
-                <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                  <i class="bi bi-question-circle"></i>
-                  <span>Need Help?</span>
-                </a>
-              </li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
 
-              <li>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <i class="bi bi-box-arrow-right"></i>
-                  <span>Sign Out</span>
-                </a>
-              </li>
-
-            </ul><!-- End Profile Dropdown Items -->
+          </ul><!-- End Profile Dropdown Items -->
         </li><!-- End Profile Nav -->
       </ul>
     </nav><!-- End Icons Navigation -->
@@ -116,7 +134,7 @@
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
-      </li><!-- End Dashboard Nav -->
+      </li><!-- End Dashboard Nav -->      
       <li class="nav-item">
         <a class="nav-link collapsed" href="kategori_produk.php">
           <i class="bi bi-tags"></i>
@@ -147,7 +165,6 @@
     </ul>
 
   </aside><!-- End Sidebar-->
-
   <main id="main" class="main">
 
     <div class="pagetitle">
@@ -155,59 +172,37 @@
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-          <li class="breadcrumb-item active">Kategori Produk</li>
+          <li class="breadcrumb-item">Kategori Produk</li>
+          <li class="breadcrumb-item active">Edit</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
-
-    <div class="row">
-      <div class="col-lg-12">
-
-        <div class="card">
-          <div class="card-body mt-3">
-            <a href="t_kat.php" class="btn btn-primary">Tambah Data</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <section class="section">
       <div class="row">
-        <div class="col-lg-12">
+       
+        <div class="col-lg-6">
 
           <div class="card">
-            <div class="card-body mt-3">
+            <div class="card-body">
+              <h5 class="card-title">Edit Kategori Produk</h5>
 
-              <!-- Table with stripped rows -->
-              <table class="table datatable">
-                <thead>
-                  <tr>
-                    <th scope="col">No</th>
-                    <th scope="col">Kode Kategori</th>
-                    <th scope="col">Kategori Produk</th>
-                    <th scope="col">aksi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                  include "koneksi.php";
-                  $no = 1;
-                  $sql = mysqli_query($conn, "SELECT * FROM categories");
-                  while ($data = mysqli_fetch_array($sql)) {
-                  ?>
-                    <tr>
-                      <td><?php echo $no++; ?></td>
-                      <td><?php echo $data['kd_kat']; ?></td>
-                      <td><?php echo $data['category_name']; ?></td>
-                      <td>
-                        <a href="e_kat.php?id=<?php echo $data['id']; ?>" class="btn btn-warning">Edit</a>
-                        <a href="h_kat.php?id=<?php echo $data['id']; ?>" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data?')">Hapus</a>
-                      </td>
-                    </tr>
-                  <?php } ?>
-                </tbody>
-              </table>
-              <!-- End Table with stripped rows -->
+              <!-- Vertical Form -->
+              <form class="row g-3" method="post">
+                <div class="col-12">
+                  <label for="kd_kat" class="form-label">Kode Kategori</label>
+                  <input type="text" class="form-control" id="kd_kat" name="kd_kat" value="<?php echo $hasil['kd_kat']; ?>" readonly>
+                </div>
+                <div class="col-12">
+                  <label for="kd_kat" class="form-label">Nama Kategori</label>
+                  <input type="text" class="form-control" id="nm_kat" name="nm_kat" value="<?php echo $hasil['category_name']; ?>" required>
+                </div>
+                <div class="text-center">
+                  <button type="button" class="btn btn-warning"><a href="kategori_produk.php" style="color: black; text-decoration: none;">Kembali</a></button>
+                  <button type="reset" class="btn btn-secondary">Reset</button>
+                  <button type="submit" class="btn btn-success" name="update">Update</button>
+
+                </div>
+              </form><!-- Vertical Form -->
 
             </div>
           </div>
