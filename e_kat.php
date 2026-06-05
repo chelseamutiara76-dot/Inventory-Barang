@@ -1,20 +1,29 @@
 <?php
+session_start();
 include "koneksi.php";
-$id = $_GET ['id'];
+
+// Cek apakah user sudah login
+if (!isset($_SESSION["login"])) {
+    header("Location: login.php");
+    exit;
+}
+?>
+<?php
+include "koneksi.php";
+$id = $_GET['id'];
 $sql = mysqli_query($conn, "SELECT * FROM categories WHERE id = '$id'");
 $hasil = mysqli_fetch_array($sql);
 if (isset($_POST['update'])) {
-    $nm_kat = $_POST['nm_kat'];
+  $nm_kat = $_POST['nm_kat'];
 
-    $query = mysqli_query($conn, "UPDATE categories SET category_name = '$nm_kat' WHERE id='$id'");
-    if ($query) {
-        echo "<script> alert('Data Berhasil Diubah!') </script>";
-        header("refresh:0, kategori_produk.php");
-    } else {
-        echo "<script> alert('Data Gagal Diubah!') </script>";
-        header("refresh:0, kategori_produk.php");
-    }
-    
+  $query = mysqli_query($conn, "UPDATE categories SET category_name = '$nm_kat' WHERE id='$id'");
+  if ($query) {
+    echo "<script> alert('Data Berhasil Diubah!') </script>";
+    header("refresh:0, kategori_produk.php");
+  } else {
+    echo "<script> alert('Data Gagal Diubah!') </script>";
+    header("refresh:0, kategori_produk.php");
+  }
 }
 ?>
 <!DOCTYPE html>
@@ -28,8 +37,8 @@ if (isset($_POST['update'])) {
   <meta content="" name="description">
   <meta content="" name="keywords">
   <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="assets/img/logo (2).png" rel="icon">
+  <link href="assets/img/logo (2).png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -51,12 +60,12 @@ if (isset($_POST['update'])) {
 
 <body>
 
- <!-- ======= Header ======= -->
+  <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="index.php" class="logo d-flex align-items-center">
-        <img src="assets/img/logo.png" alt="">
+        <img src="assets/img/logo (2).png" alt="">
         <span class="d-none d-lg-block">Inventory Barang</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -68,75 +77,55 @@ if (isset($_POST['update'])) {
 
         <li class="nav-item dropdown">
         <li class="nav-item dropdown pe-3">
+          <a
+            class="nav-link nav-profile d-flex align-items-center pe-0"
+            href="#"
+            data-bs-toggle="dropdown">
+            <img
+              src="assets/img/Bahlil adidas.jpg"
+              alt="Profile"
+              class="rounded-circle" /> </a><!-- End Profile Image Icon -->
 
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-           
 
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+          <ul
+            class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
-              <span>Web Designer</span>
+              <h6><?php echo isset($_SESSION['name']) ? $_SESSION['name'] : 'User'; ?></h6>
+              <span><?php echo isset($_SESSION['role']) ? $_SESSION['role'] : 'Role'; ?></span>
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="logout.php">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
             </li>
 
-          </ul><!-- End Profile Dropdown Items -->
-        </li><!-- End Profile Nav -->
+          </ul>
+          <!-- End Profile Dropdown Items -->
+        </li>
+        <!-- End Profile Nav -->
       </ul>
-    </nav><!-- End Icons Navigation -->
-  </header><!-- End Header -->
+    </nav>
+    <!-- End Icons Navigation -->
+  </header>
+  <!-- End Header -->
   <!-- ======= Sidebar ======= -->
   <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="index.php">
-          <i class="bi bi-grid"></i>
+        <a class="nav-link collapsed" href="index.php">
+          <i class="bi bi-speedometer2"></i>
           <span>Dashboard</span>
         </a>
-      </li><!-- End Dashboard Nav -->      
+      </li><!-- End Dashboard Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="kategori_produk.php">
+        <a class="nav-link " href="kategori_produk.php">
           <i class="bi bi-tags"></i>
           <span>Kategori Produk</span>
         </a>
@@ -179,7 +168,7 @@ if (isset($_POST['update'])) {
     </div><!-- End Page Title -->
     <section class="section">
       <div class="row">
-       
+
         <div class="col-lg-6">
 
           <div class="card">
@@ -216,7 +205,7 @@ if (isset($_POST['update'])) {
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+      &copy; Copyright <strong><span>Inventory Barang</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
       <!-- All the links in the footer should remain intact. -->
